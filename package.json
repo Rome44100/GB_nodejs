@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/Rome44100/GB_nodejs#readme",
   "dependencies": {
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "date-fns": "^2.24.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0"
