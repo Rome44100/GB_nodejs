@@ -1,0 +1,27 @@
+{
+  "name": "gb_nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rome44100/GB_nodejs.git"
+  },
+  "author": "Rome44100",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rome44100/GB_nodejs/issues"
+  },
+  "homepage": "https://github.com/Rome44100/GB_nodejs#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "date-fns": "^2.24.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
