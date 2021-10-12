@@ -25,6 +25,7 @@
     "colors": "^1.4.0",
     "date-fns": "^2.24.0",
     "inquirer": "^8.2.0",
+    "nodemon": "^2.0.13",
     "yargs": "^17.2.1"
   },
   "devDependencies": {

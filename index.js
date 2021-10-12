@@ -1,30 +1,15 @@
-// function parse logs
-async function createFileByNameAndPutStuff (findStr = "my", pathToFile) {
-    const fs = require("fs");
-    const readline = require("readline");
-    const fullPath = "../../Lesson_3_filesystem/logs/" + findStr + "_requests.log";
+const http = require("http");
 
-    const readStream = fs.createReadStream(pathToFile, { flags: "r", encoding: "utf-8" });
+const server = http.createServer((request, response) => {
+    // console.log("URL", request.url);
+    // console.log("method", request.method);
+    // console.log("headers", request.headers);
 
-    const rl = readline.createInterface({
-        input: readStream,
-        crlfDelay: Infinity
+    response.writeHead(200, "Ok", {
+        "custom-header": "test"
     });
 
-    const writeStream = fs.createWriteStream(fullPath, { flags: "a" });
+    response.end();
+});
 
-    for await (const line of rl) {
-        if(-1 != line.indexOf(findStr)) {
-            writeStream.write(line + "\n");
-        }
-    }
-
-    writeStream.on("finish", () => console.log("Finished writing file!"));
-    writeStream.on("error", (er) => console.log("Error write line!", er));
-
-    readStream.on("end", () => console.log("End read file!"));
-    readStream.on("error", (er) => console.log("Error read file!", er));
-}
-
-// createFileByNameAndPutStuff("89.123.1.41", "../../Lesson_3_filesystem/access.log"); // too big ~ 500 MB
-createFileByNameAndPutStuff("34.48.240.111", "../../Lesson_3_filesystem/access.log"); // some smaller ~ 39 MB
+server.listen(3333);
