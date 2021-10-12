@@ -1,4 +1,5 @@
-#!"C:\Program Files\nodejs\node.exe"
+#!/c/Program Files/nodejs/node
+// C:\Program Files\nodejs\node.exe
 const fs = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");
@@ -12,7 +13,7 @@ function getDir(somePath = "./") {
         const data = fs.readFileSync(fullPath, "utf-8");
         inquirer.prompt([
             {
-                name: "str",
+                name: "str", 
                 type: "input", // input, number, confirm, checkbox, password
                 message: "Enter find string/pattern",
                 choices: data,
