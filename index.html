@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directory manager</title>
+    <title>Chat me harder!</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <script src="https://cdn.socket.io/4.2.0/socket.io.min.js" integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
-    <h1>Directory manager</h1>
+    <h1>Chat me!</h1>
 </header>
 <main>
-    <div id="listing"></div>
+    <input id="enterText" type="text" />
+    <button id="pressToSend">Send</button>
+    <div id="msgList"></div>
 </main>
+<script>
+const socket = io("localhost:3333");
+socket.on("connect", () => {
+    console.log("Client connect!");
+})
+socket.emit("send-message", "test");
+</script>
 </body>
 </html>
