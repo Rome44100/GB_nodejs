@@ -15,7 +15,17 @@ const io = socket(server);
 io.on("connection", (client) => {
     console.log("Connected with server!");
 
-    client.on("send-message", data => {
-        console.log(data);
+    client.emit("client-name", () => {
+        const data = [];
+        data.push( { userName: "User_" + Date.now() } );
+        client.broadcast.emit("server-response-users", data);
+    });
+
+    client.on("send-message", ({ message }) => {
+        const data = {
+            message: message
+        }
+        client.broadcast.emit("server-response", data);
+        client.emit("server-response", data);
     });
 });
