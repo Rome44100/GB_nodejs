@@ -6,40 +6,54 @@
     <title>Chat me harder!</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
     <script src="https://cdn.socket.io/4.2.0/socket.io.min.js" integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj" crossorigin="anonymous"></script>
+    <style>
+        .title {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <header>
     <h1>Chat me!</h1>
 </header>
 <main>
+    <h3>Users online:</h3>
     <div id="userList"></div>
+    <h3>Chat messages:</h3>
+    <div id="msgList"></div>
+    <hr>
+    <span class="title">My login:</span>
+    <span id="myLogin"></span>
     <input id="enterText" type="text" />
     <button id="pressToSend">Send</button>
-    <div id="msgList"></div>
 </main>
 <script>
 "use strict";
 const socket = io("localhost:3333");
+
 const userList = document.getElementById("userList");
 const msgList = document.getElementById("msgList");
 const enterText = document.getElementById("enterText");
 const pressToSend = document.getElementById("pressToSend");
+const myLogin = document.getElementById("myLogin");
+let login = "";
 
 socket.on("connect", () => {
-    console.log("Client connect!");
 
-    // const data = {
-    //     userName: "User_" + Date.now()
-    // }
-    // socket.emit("client-name", data);
 });
 
-socket.on("client-name", data => {
-    console.log(data);
+socket.on("client-login", userLogin => {
+    login = userLogin;
+    myLogin.insertAdjacentHTML("beforeend", login);
+});
+
+socket.on("server-response-users", (data) => {
+    let list = "";
     data.forEach(el => {
-        userList.insertAdjacentHTML("beforeend", el);
+        list += `<div>${el}</div>`;
     });
-})
+    userList.innerHTML = list;
+});
 
 pressToSend.addEventListener("click", () => {
     const data = {

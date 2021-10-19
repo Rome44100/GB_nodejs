@@ -12,14 +12,24 @@ const server = http.createServer((q, r) => {
 
 const io = socket(server);
 
-io.on("connection", (client) => {
-    console.log("Connected with server!");
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+const userList = [];
+let userLogin = null;
 
-    client.emit("client-name", () => {
-        const data = [];
-        data.push( { userName: "User_" + Date.now() } );
-        client.broadcast.emit("server-response-users", data);
-    });
+io.on("connection", (client) => {
+
+    userLogin = "User_" + getRandomInt(1000);
+
+    client.emit("client-login", userLogin);
+
+    if (!userList.includes(userLogin)) {
+        userList.push(userLogin);
+    }
+
+    client.broadcast.emit("server-response-users", userList);
+    client.emit("server-response-users", userList);
 
     client.on("send-message", ({ message }) => {
         const data = {
