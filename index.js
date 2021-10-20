@@ -12,15 +12,12 @@ const server = http.createServer((q, r) => {
 
 const io = socket(server);
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
 const userList = [];
 let userLogin = null;
 
 io.on("connection", (client) => {
 
-    userLogin = "User_" + getRandomInt(1000);
+    userLogin = "User_" + Math.floor(Math.random() * 1000);
 
     client.emit("client-login", userLogin);
 
