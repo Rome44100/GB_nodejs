@@ -21,16 +21,26 @@ io.on("connection", (client) => {
 
     client.emit("client-login", userLogin);
 
-    if (!userList.includes(userLogin)) {
-        userList.push(userLogin);
-    }
+    userList.push({ login: userLogin, id: client.client.id });
 
     client.broadcast.emit("server-response-users", userList);
     client.emit("server-response-users", userList);
 
-    client.on("send-message", ({ message }) => {
+    client.on("disconnect", () => {
+        // console.log("User disconnected", client.client.id);
+        userList.forEach((el, idx, arr) => {
+            if (el.id === client.client.id) {
+                arr.splice(idx, 1);
+            }
+        });
+        client.broadcast.emit("disconnect_event", userList);
+        client.emit("disconnect_event", userList);
+    });
+
+    client.on("send-message", ({ message, user }) => {
         const data = {
-            message: message
+            message: message,
+            user: user
         }
         client.broadcast.emit("server-response", data);
         client.emit("server-response", data);

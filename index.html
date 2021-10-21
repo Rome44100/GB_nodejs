@@ -17,7 +17,7 @@
     <h1>Chat me!</h1>
 </header>
 <main>
-    <h3>Users online:</h3>
+    <h3>Users online: <span id="usersCount" style="color: red;"></span></h3>
     <div id="userList"></div>
     <h3>Chat messages:</h3>
     <div id="msgList"></div>
@@ -36,7 +36,17 @@ const msgList = document.getElementById("msgList");
 const enterText = document.getElementById("enterText");
 const pressToSend = document.getElementById("pressToSend");
 const myLogin = document.getElementById("myLogin");
+const usersCount = document.getElementById("usersCount");
 let login = "";
+let uList = null;
+
+function renderList(elem, data) {
+    let list = "";
+    data.forEach(el => {
+        list += `<div>${el.login}</div>`;
+    });
+    elem.innerHTML = list;
+}
 
 socket.on("connect", () => {
 
@@ -48,23 +58,26 @@ socket.on("client-login", userLogin => {
 });
 
 socket.on("server-response-users", (data) => {
-    let list = "";
-    data.forEach(el => {
-        list += `<div>${el}</div>`;
-    });
-    userList.innerHTML = list;
+    usersCount.innerHTML = data.length;
+    renderList(userList, data);
 });
+
+socket.on("disconnect_event", data => {
+    usersCount.innerHTML = data.length;
+    renderList(userList, data);
+})
 
 pressToSend.addEventListener("click", () => {
     const data = {
         message: enterText.value,
+        user: login
     }
 
     socket.emit("send-message", data);    
 });
 
-socket.on("server-response", ({ message }) => {
-    msgList.insertAdjacentHTML("beforeend", `<p>${message}</p>`);
+socket.on("server-response", ({ message, user }) => {
+    msgList.insertAdjacentHTML("beforeend", `<p><span>${user}</span>: ${message}</p>`);
 });
 </script>
 </body>
